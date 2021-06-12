@@ -2,10 +2,10 @@
   <header>
       <nav class="container">
           <div class="branding">
-              <router-link class="header" :to="{ name: 'Home' }">Your-Photo</router-link>
+              <router-link class="header" :to="{ name: 'Home' }">MYphoto</router-link>
           </div>
           <div class="nav-links">
-              <ul>
+              <ul v-show="!mobileNav">
                   <router-link class="link" to="#">Home</router-link>
                   <router-link class="link" to="#">Blogs</router-link>
                   <router-link class="link" to="#">Post Photos</router-link>
@@ -13,13 +13,13 @@
               </ul>
           </div>
       </nav>
-      <menuIcon class="menu-icon"/>
-      <transition>
-               <ul class="mobile-nav">
-                  <router-link class="links" to="#">Home</router-link>
-                  <router-link class="links" to="#">Blogs</router-link>
-                  <router-link class="links" to="#">Post Photos</router-link>
-                  <router-link class="links" to="#">Login/Register</router-link>
+      <menuIcon @click="toggleNav" v-show="mobile" class="menu-icon"/>
+      <transition name="mobile-nav">
+               <ul v-show="mobileNav" class="mobile-nav">
+                  <router-link class="link link2" to="#">Home</router-link>
+                  <router-link class="link link2" to="#">Blogs</router-link>
+                  <router-link class="link link2" to="#">Post Photos</router-link>
+                  <router-link class="link link2" to="#">Login/Register</router-link>
               </ul> 
       </transition>
   </header>
@@ -32,7 +32,33 @@ export default {
     name: 'navigation',
     components: {
         menuIcon
-    }
+    },
+    data() {
+        return {
+            mobile: null,
+            mobileNav: null,
+            windowWidth: null
+        }
+    },
+    created() {
+        window.addEventListener("resize", this.checkScreen);
+        this.checkScreen();
+    },
+    methods: {
+        checkScreen() {
+            this.windowWidth = window.innerWidth;
+            if (this.windowWidth < 768) {
+                this.mobile = true;
+                return;
+            }
+            this.mobile = false;
+            this.mobileNav = false;
+            return;
+        },
+        toggleNav () {
+            this.mobileNav = !this.mobileNav;
+        }
+    },
 }
 </script>
 
@@ -41,6 +67,7 @@ header {
     background-color: #fff;
     padding: 0 25px;
     z-index: 99;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .link {
@@ -89,10 +116,6 @@ nav {
     width: auto;
 }
 
-.link {
-    margin-right: 32;
-}
-
 .mobile-nav {
     padding: 20px;
     width: 70%;
@@ -106,9 +129,27 @@ nav {
     left: 0
 }
 
-.links {
+.link2 {
     padding: 15px 0;
     color: #fff;
 }
+
+.mobile-nav-enter-active,
+.mobile-nav-leave-active {
+    transition: all 1s ease;
+}
+
+.mobile-nav-enter {
+    transform: translateX(-250px);
+}
+
+.mobile-nav-enter-to {
+    transform: translateX(0);
+}
+
+.mobile-nav-leave-to {
+    transform: translateX(-250px);
+}
+
 
 </style>
