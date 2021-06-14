@@ -56,4 +56,44 @@ export default {
 .link-light {
   color: #fff;
 }
+
+.arrow {
+  margin-left: 8px;
+  width: 12px;
+  path {
+    fill: #000;
+  }
+}
+
+.arrow-light {
+  path {
+    fill: #fff;
+  }
+}
+
+.blog-card-wrap {
+  position: relative;
+  padding: 80px 16px;
+  background-color: #f2f2f2;
+  @media(min-width: 500px) {
+    padding: 100px 16px;
+  }
+
+  .blog-cards {
+    display: grid;
+    gap: 32px;
+    grid-template-columns: 1fr;
+
+    @media(min-width: 500px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media(min-width: 900px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    @media(min-width: 1200px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}
+
 </style>
