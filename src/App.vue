@@ -1,9 +1,9 @@
 <template>
   <div class="app-wrapper">
     <div class="app">
-      <Navigation/>
+      <Navigation v-if="!navDisable"/>
       <router-view />
-      <Footer/>
+      <Footer v-if="!navDisable"/>
     </div>
   </div>
 </template>
@@ -16,12 +16,29 @@ export default {
   name: "app",
   components: { Navigation, Footer },
   data() {
-    return {};
+    return {
+      navDisable: null,
+    };
   },
-  created() {},
+  created() {
+    this.checkRoute();
+  },
   mounted() {},
-  methods: {},
-  watch: {},
+  methods: {
+    checkRoute() {
+      if (this.$route.name === "Login" || this.$route.name === "Register" || this.$route.name === "ForgotPass") {
+        this.navDisable = true;
+        return;
+      } else {
+        this.navDisable = false;
+      }
+    }
+  },
+  watch: {
+    $route() {
+      this.checkRoute();
+    }
+  },
 };
 </script>
 
