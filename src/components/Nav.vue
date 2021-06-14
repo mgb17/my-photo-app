@@ -6,8 +6,8 @@
           </div>
           <div class="nav-links">
               <ul v-show="!mobileNav">
-                  <router-link class="link" to="#">Home</router-link>
-                  <router-link class="link" to="#">Blogs</router-link>
+                  <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
+                  <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
                   <router-link class="link" to="#">Post Photos</router-link>
                   <router-link class="link" to="#">Login/Register</router-link>
               </ul>
@@ -16,8 +16,8 @@
       <menuIcon @click="toggleNav" v-show="mobile" class="menu-icon"/>
       <transition name="mobile-nav">
                <ul v-show="mobileNav" class="mobile-nav">
-                  <router-link class="link link2" to="#">Home</router-link>
-                  <router-link class="link link2" to="#">Blogs</router-link>
+                  <router-link class="link link2" :to="{ name: 'Home' }">Home</router-link>
+                  <router-link class="link link2" :to="{ name: 'Blogs' }">Blogs</router-link>
                   <router-link class="link link2" to="#">Post Photos</router-link>
                   <router-link class="link link2" to="#">Login/Register</router-link>
               </ul> 

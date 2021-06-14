@@ -1,6 +1,6 @@
 <template>
   <div class="blog-card">
-      <div class="icons">
+      <div v-show="editPost" class="icons">
           <div class="icon">
               <Edit class="edit"/>
           </div><div class="icon">
@@ -30,6 +30,11 @@ export default {
         Edit,
         Delete
     },
+    computed: {
+        editPost() {
+            return this.$store.state.editPost
+        }
+    }
 };
 </script>
 
@@ -46,7 +51,7 @@ export default {
     transition: .5s ease all;
 
     &:hover {
-        transform: rotateZ(-10deg) scale(1.1);
+        transform: rotateZ(-5deg) scale(1.1);
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
     }
@@ -70,9 +75,75 @@ export default {
 
             &:hover {
                 background-color: #303030;
+
+                .edit,
+                .delete {
+                    path {
+                        fill: #fff;
+                    }
+                }
+            }
+
+            &:nth-child(1) {
+                margin-right: 8px;
+            }
+
+            .edit,
+            .delete {
+                pointer-events: none;
+                height: 15px;
+                width: auto;
             }
         }
+    }
 
+    img {
+            display: block;
+            border-radius: 8px 8px 0 0;
+            z-index: 1;
+            width: 100%;
+            min-height: 200px;
+            object-fit: cover;
+        }
+    
+    .info {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        z-index: 3;
+        padding: 32px 16px;
+        color: #000;
+
+        h4 {
+            padding-block: 8px;
+            font-size: 20px;
+            font-weight: 300;
+        }
+
+        h6 {
+            font-weight: 400;
+            font-size: 12px;
+            padding-bottom: 16px;
+        }
+
+        .link {
+            display: inline-flex;
+            align-items: center;
+            margin-top: auto;
+            font-weight: 500;
+            padding-top: 20px;
+            font-size: 12px;
+            padding-bottom: 4px;
+            transition: 0.5 ease-in all;
+
+            &:hover {
+                color: red;
+            }
+
+            .arrow {
+                width: 10px;
+            }
+        }
     }
 }
 
