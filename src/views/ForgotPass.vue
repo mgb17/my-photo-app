@@ -27,19 +27,22 @@
 <script>
 import Email from "../assets/Icons/envelope-regular.svg";
 import Modal from "../components/Modal.vue"
+import Loading from "../components/Loading.vue"
 
 
 export default {
     name: "ForgotPassword",
     components: {
         Email,
-        Modal
+        Modal,
+        Loading
     },
     data() {
         return {
             email: "",
             modalActive: false,
             modalMessage: "",
+            loading: null,
         };
     },
     methods: {

@@ -8,8 +8,8 @@
               <ul v-show="!mobileNav">
                   <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
                   <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
-                  <router-link class="link" to="#">Post Photos</router-link>
-                  <router-link class="link" to="#">Login/Register</router-link>
+                  <router-link class="link" :to="{ name: '' }">Post Photos</router-link>
+                  <router-link class="link" :to="{ name: 'Login' }">Login/Register</router-link>
               </ul>
           </div>
       </nav>
