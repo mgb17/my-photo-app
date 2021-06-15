@@ -1,6 +1,6 @@
 <template>
   <div class="reset-password">
-        <Modal v-if="modalActive" v-on:close-modal="closeModal" />
+        <Modal v-if="modalActive" :modalMessage="modalMessage" v-on:close-modal="closeModal" />
         <Loading v-if="loading" />
         <div class="form-wrap">
         <form class="reset">
@@ -16,7 +16,7 @@
                 <email class="icon" />
             </div>
             </div>
-            <button>Reset</button>
+            <button @click.prevent="resetPass">Reset</button>
             <div class="angle"></div>
         </form>
         <div class="background"></div>
@@ -27,7 +27,9 @@
 <script>
 import Email from "../assets/Icons/envelope-regular.svg";
 import Modal from "../components/Modal.vue"
-import Loading from "../components/Loading.vue"
+import Loading from "../components/Loading.vue";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 
 export default {
@@ -46,6 +48,18 @@ export default {
         };
     },
     methods: {
+        resetPass() {
+          this.loading = true;
+          firebase.auth().sendPasswordResetEmail(this.email).then(() => {
+            this.modalMessage = "You will receive an E-Mail";
+            this.loading = false;
+            this.modalActive = true;
+          }).catch(err => {
+            this.modalMessage = err.message;
+            this.loading = false;
+            this.modalActive = true;
+          })
+        },
         closeModal() {
             this.modalActive = !this.modalActive;
             this.email = ""

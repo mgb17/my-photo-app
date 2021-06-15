@@ -15,9 +15,10 @@
                     <input type="text" placeholder="Password" v-model="password">
                     <Password class="icon"/>
                 </div>
+                <div v-show="error" class="error">{{ this.errorMsg}}</div>
             </div>
             <router-link class="forgot-password" :to="{name: 'ForgotPass'}">Forgot your password?</router-link>
-            <button>Sign In</button>
+            <button @click.prevent="login">Sign In</button>
             <div class="angle"></div>
         </form>
         <div class="background"></div>
@@ -29,6 +30,8 @@
 <script>
 import Email from "../assets/Icons/envelope-regular.svg";
 import Password from "../assets/Icons/lock-alt-solid.svg";
+import firebase from "firebase/app";
+import "firebase/auth";
 
 export default {
     name: "Login",
@@ -40,7 +43,20 @@ export default {
         return {
             email: null,
             password: null,
+            error: null,
+            errorMsg: "", 
         }
+    },
+    methods: {
+      login() {
+        firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(() => {
+          this.$router.push({ name: "Home" });
+          this.error = false;
+        }).catch(err => {
+          this.error = true;
+          this.errorMsg = err.message;
+        })
+      }
     }
 };
 
