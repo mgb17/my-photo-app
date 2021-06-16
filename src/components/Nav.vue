@@ -9,9 +9,9 @@
                   <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
                   <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
                   <router-link class="link" :to="{ name: '' }">Post Photos</router-link>
-                  <router-link class="link" :to="{ name: 'Login' }">Login/Register</router-link>
+                  <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login/Register</router-link>
               </ul>
-              <div @click="avatarMenu" class="profile" ref="profile">
+              <div v-if="user" @click="avatarMenu" class="profile" ref="profile">
                   <span>{{ this.$store.state.profileInitials }}</span>
                   <div v-show="avatarMenuu" class="profile-menu">
                       <div class="info">
@@ -50,7 +50,7 @@
                   <router-link class="link link2" :to="{ name: 'Home' }">Home</router-link>
                   <router-link class="link link2" :to="{ name: 'Blogs' }">Blogs</router-link>
                   <router-link class="link link2" to="#">Post Photos</router-link>
-                  <router-link class="link link2" to="#">Login/Register</router-link>
+                  <router-link v-if="!user" class="link link2" to="#">Login/Register</router-link>
               </ul> 
       </transition>
   </header>
@@ -78,6 +78,7 @@ export default {
             mobileNav: null,
             windowWidth: null,
             avatarMenuu: null,
+            // showMenu: true
         }
     },
     created() {
@@ -105,9 +106,15 @@ export default {
         },
         signOut() {
             firebase.auth().signOut();
-            window.location.reload();
+            // this.showMenu = false
+             window.location.reload();
         }
     },
+    computed: {
+      user() {
+        return this.$store.state.user;
+      },
+    }
 }
 </script>
 
