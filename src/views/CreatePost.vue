@@ -1,6 +1,7 @@
 <template>
   <div class="create-post">
       <BlogCoverPreview v-show="this.$store.state.blogPhotoPreview"/>
+      <Loading v-show="loading" />
       <div class="container">
           <div :class="{invisible: !error }" class="err-message">
               <p><span>Error:</span>{{ this.errorMsg }}</p>
@@ -18,7 +19,7 @@
               <vue-editor :editorOptions="editorSettings" v-model="blogHTML" useCustomImageHandler @image-added="imageHandler"></vue-editor>
           </div>
           <div class="blog-actions">
-              <button>Publish Blog</button>
+              <button @click="uploadBlog">Publish Blog</button>
               <router-link class="router-button" :to="{ name: 'BlogPreview' }">Post Preview</router-link>
           </div>
       </div>
@@ -33,6 +34,9 @@ const ImageResize = require("quill-image-resize-module").default;
 Quill.register("modules/imageResize", ImageResize);
 import firebase from "firebase/app";
 import "firebase/storage";
+import db from "../firebase/firebaseInit";
+import Loading from '../components/Loading.vue';
+
 
 export default {
     name: "CreatePost",
@@ -45,11 +49,13 @@ export default {
                 modules: {
                     imageResize: {},
                 }
-            }
+            },
+            loading: null,
         }
     },
     components: { 
-        BlogCoverPreview
+        BlogCoverPreview,
+        Loading
     },
     methods: {
         fileChange() {
@@ -75,7 +81,54 @@ export default {
                  resetUploader();
              }
              );
-         }
+         },
+         uploadBlog() {
+             if (this.blogTitle.length !==0 && this.blogHTML.length !== 0) {
+                 if (this.file) {
+                     this.loading = true;
+                     const storageRef = firebase.storage().ref();
+                     const docRef = storageRef.child(`documents/blogCoverPhotos/${this.$store.state.blogPhotoName}`);
+                     docRef.put(this.file).on("state_changed", (snapshot) => {
+                         console.log(snapshot);
+                     }, (err) => {
+                         //
+                         console.log(err);
+                         this.loading = false;
+                     }, async () => {
+                         const downloadURL = await docRef.getDownloadURL();
+                         const timeStamp = await Date.now();
+                         const dataBase = await db.collection("blogPosts").doc();
+
+                         await dataBase.set({
+                             blogId: dataBase.id,
+                             blogHTML: this.blogHTML,
+                             blogCoverPhoto: downloadURL,
+                             blogCoverPhotoName: this.blogCoverPhotoName,
+                             blogTitle: this.blogTitle,
+                             profilId: this.profileId,
+                             date: timeStamp
+                         });
+                         this.loading = false;
+                         this.$router.push({name: "ViewBlog"});
+                     }
+                     );
+
+                     return;
+             } 
+                this.error = true;
+                this.errorMsg = "PLease upload a cover photo";
+                setTimeout(() => {
+                    this.error = false
+                }, 5000);
+                return;
+             }
+                this.error = true;
+                this.errorMsg = "PLease fill out";
+                setTimeout(() => {
+                    this.error = false
+                }, 5000);
+                return;
+            }
     },
     computed: {
         profileId() {
