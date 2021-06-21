@@ -8,6 +8,7 @@ import ForgotPass from "../views/ForgotPass.vue";
 import Profile from "../views/Profile.vue";
 import Admin from "../views/Admin.vue";
 import CreatePost from "../views/CreatePost.vue";
+import BlogPreview from "../views/BlogPreview.vue";
 
 Vue.use(VueRouter);
 
@@ -74,6 +75,14 @@ const routes = [
     component: CreatePost,
     meta: {
       title: 'Create Post'
+    }
+  },
+  {
+    path: "/preview",
+    name: "BlogPreview",
+    component: BlogPreview,
+    meta: {
+      title: 'Blog Preview'
     }
   },
 ];
