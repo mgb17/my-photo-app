@@ -4,6 +4,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import db from "../firebase/firebaseInit";
 
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -14,6 +15,8 @@ export default new Vuex.Store({
       { blogTitle: "number 3", blogCoverPhoto: "stock-3", blogDate: "14 June 2021"},
       { blogTitle: "number 4", blogCoverPhoto: "stock-4", blogDate: "14 June 2021"}
     ],
+    blogPosts: [],
+    postLoaded: null,
     blogHTML: "Write your blog title here...",
     blogTitle: "",
     blogPhotoName: "",
@@ -28,6 +31,14 @@ export default new Vuex.Store({
     profileUsername: null,
     profileId: null,
     profileInitials: null,
+  },
+  getters: {
+    blogPostsFeed(state) {
+      return state.blogPosts.slice(0, 2);  //to get two newest posts
+    },
+    blogPostCards(state) {
+      return state.blogPosts.slice(2, 6);
+    }
   },
   mutations: {
     newBlogPost(state,payload) {
@@ -80,6 +91,24 @@ export default new Vuex.Store({
       commit("setProfile", dbResults);
       commit("setProfileInitials");
       console.log(dbResults)
+    },
+    async getPost ({state }) {
+      const dataBase = await db.collection("blogPosts").orderBy('date', 'desc');
+      const dbResults = await dataBase.get();
+      dbResults.forEach(doc => {
+        if (!state.blogPosts.some(post => post.blogId === doc.id)) {
+          const data = {
+            blogId: doc.data().blogId,
+            blogHTML: doc.data().blogHTML,
+            blogCoverPhoto: doc.data().blogCoverPhoto,
+            blogTitle: doc.data().blogTitle,
+            blogDate: doc.data().date
+          };
+          state.blogPosts.push(data);
+        }
+      });
+      state.postLoaded = true;
+
     },
     async updateUserSettings({commit, state}) {
       const dataBase= await db.collection('users').doc(state.profileId);

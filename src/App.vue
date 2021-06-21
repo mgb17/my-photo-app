@@ -32,6 +32,7 @@ export default {
       }
     })
     this.checkRoute();
+    this.$store.dispatch("getPost");
   },
   mounted() {},
   methods: {
