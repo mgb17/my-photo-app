@@ -10,8 +10,8 @@
      <img :src="post.blogCoverPhoto" alt="">
      <div class="info">
          <h4>{{ post.blogTitle }}</h4>
-         <h6>Post Date: {{ post.blogDate }}</h6>
-         <router-link class="link" to="#">
+         <h6>Post Date: {{ new Date(post.blogDate).toLocaleString("en-us", { dateStyle: "long" })}}</h6>
+         <router-link class="link" :to="{name: 'ViewBlog', params: {blogid: this.post.blogId}}">
              View The Photos <Arrow class="arrow" /></router-link>
      </div>
   </div>

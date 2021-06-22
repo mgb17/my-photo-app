@@ -67,7 +67,7 @@ export default {
         openPreview() {
             this.$store.commit("openPhotoPreview");
          },
-         imageHandler(file, Editor, cursorLocation, resetUploader) {
+        imageHandler(file, Editor, cursorLocation, resetUploader) {
              const storageRef = firebase.storage().ref();
              const docRef = storageRef.child(`documents/blogPostPhotos/${file.name}`);
              docRef.put(file).on("state_changed", (snapshot)=> {
@@ -108,8 +108,9 @@ export default {
                              profilId: this.profileId,
                              date: timeStamp
                          });
+                         await this.$store.state.dispatch("getPost");
                          this.loading = false;
-                         this.$router.push({name: "ViewBlog"});
+                         this.$router.push({name: "ViewBlog", params: {blogid: dataBase.id}});
                      }
                      );
 

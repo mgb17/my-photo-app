@@ -9,12 +9,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    sampleBlogCards: [
-      { blogTitle: "number 1", blogCoverPhoto: "1", blogDate: "14 June 2021"},
-      { blogTitle: "number 2", blogCoverPhoto: "stock-2", blogDate: "14 June 2021"},
-      { blogTitle: "number 3", blogCoverPhoto: "stock-3", blogDate: "14 June 2021"},
-      { blogTitle: "number 4", blogCoverPhoto: "stock-4", blogDate: "14 June 2021"}
-    ],
+    
     blogPosts: [],
     postLoaded: null,
     blogHTML: "Write your blog title here...",
