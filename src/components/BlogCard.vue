@@ -3,7 +3,8 @@
       <div v-show="editPost" class="icons">
           <div class="icon">
               <Edit class="edit"/>
-          </div><div class="icon">
+          </div>
+          <div @click="deletePost" class="icon">
               <Delete class="delete"/>
           </div>
      </div>
@@ -29,6 +30,11 @@ export default {
         Arrow,
         Edit,
         Delete
+    },
+    methods: {
+        deletePost() {
+            this.$store.dispatch("deletePost", this.post.blogId)
+        },
     },
     computed: {
         editPost() {
